@@ -1,0 +1,80 @@
+package serializable;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+public class Main {
+    static StringBuilder log = new StringBuilder();
+
+    public static void main(String[] args) {
+        GameProgress gameOne = new GameProgress(98, 3, 4, 5);
+        GameProgress gameTwo = new GameProgress(28, 76, 3, 4);
+        GameProgress gameTree = new GameProgress(36, 64, 3, 4);
+        String strGameOne = "C:\\Games\\saveGames\\gameOne.java";
+        String strGameTwo = "C:\\Games\\saveGames\\gameTwo.java";
+        String strGameTree = "C:\\Games\\saveGames\\gameTree.java";
+        saveGames(strGameOne, gameOne);
+        saveGames(strGameTwo, gameTwo);
+        saveGames(strGameTree, gameTree);
+        List<String> gameList = new ArrayList<>();
+        gameList.add(strGameOne);
+        gameList.add(strGameTwo);
+        gameList.add(strGameTree);
+        String zipArr = "C:\\Games\\saveGames\\ZipArr.zip";
+        zipFiles(zipArr, gameList);
+        File one = new File(strGameOne);
+        deleteFiles(one);
+        log.append("Название файла gameOne.java.\n");
+        File two = new File(strGameTwo);
+        deleteFiles(two);
+        log.append("Название файла gameTwo.java.\n");
+        File tree = new File(strGameTree);
+        deleteFiles(tree);
+        log.append("Название файла gameTree.java.\n");
+        System.out.println(log.toString());
+    }
+
+    public static void saveGames(String string, GameProgress gameProgress) {
+        try (FileOutputStream serFile = new FileOutputStream(string);
+             ObjectOutputStream oos = new ObjectOutputStream(serFile)) {
+            oos.writeObject(gameProgress.toString());
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    public static void zipFiles(String string, List<String> list) {
+        try (ZipOutputStream zip = new ZipOutputStream(new FileOutputStream(string))) {
+            for (String item : list) {
+                try (FileInputStream fiz = new FileInputStream(item)) {
+                    ZipEntry zipE = new ZipEntry(item);
+                    zip.putNextEntry(zipE);
+                    byte[] buff = new byte[fiz.available()];
+                    fiz.read(buff);
+                    zip.write(buff);
+                    byte[] buff1 = new byte[fiz.available()];
+                    fiz.read(buff1);
+                    zip.write(buff);
+                    zip.closeEntry();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteFiles(File file) {
+        if (file.delete())
+            log.append("Файл удален. ");
+    }
+}
+
+
+
