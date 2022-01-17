@@ -1,5 +1,8 @@
 package serializable;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class GameProgress implements Serializable {
@@ -16,6 +19,8 @@ public class GameProgress implements Serializable {
         this.lvl = lvl;
         this.distance = distance;
     }
+
+
 
     @Override
     public String toString() {

@@ -13,9 +13,9 @@ public class Main {
         GameProgress gameOne = new GameProgress(98, 3, 4, 5);
         GameProgress gameTwo = new GameProgress(28, 76, 3, 4);
         GameProgress gameTree = new GameProgress(36, 64, 3, 4);
-        String strGameOne = "C:\\Games\\saveGames\\gameOne.java";
-        String strGameTwo = "C:\\Games\\saveGames\\gameTwo.java";
-        String strGameTree = "C:\\Games\\saveGames\\gameTree.java";
+        String strGameOne = "C:\\Games\\saveGames\\gameOne.dat";
+        String strGameTwo = "C:\\Games\\saveGames\\gameTwo.dat";
+        String strGameTree = "C:\\Games\\saveGames\\gameTree.dat";
         saveGames(strGameOne, gameOne);
         saveGames(strGameTwo, gameTwo);
         saveGames(strGameTree, gameTree);
@@ -27,20 +27,20 @@ public class Main {
         zipFiles(zipArr, gameList);
         File one = new File(strGameOne);
         deleteFiles(one);
-        log.append("Название файла gameOne.java.\n");
+        log.append("Название файла gameOne.dat.\n");
         File two = new File(strGameTwo);
         deleteFiles(two);
-        log.append("Название файла gameTwo.java.\n");
+        log.append("Название файла gameTwo.dat.\n");
         File tree = new File(strGameTree);
         deleteFiles(tree);
-        log.append("Название файла gameTree.java.\n");
+        log.append("Название файла gameTree.dat.\n");
         System.out.println(log.toString());
     }
 
     public static void saveGames(String string, GameProgress gameProgress) {
         try (FileOutputStream serFile = new FileOutputStream(string);
              ObjectOutputStream oos = new ObjectOutputStream(serFile)) {
-            oos.writeObject(gameProgress.toString());
+            oos.writeObject(gameProgress);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
@@ -63,9 +63,7 @@ public class Main {
                     System.out.println(e.getMessage());
                 }
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
