@@ -55,9 +55,6 @@ public class Main {
                     byte[] buff = new byte[fiz.available()];
                     fiz.read(buff);
                     zip.write(buff);
-                    byte[] buff1 = new byte[fiz.available()];
-                    fiz.read(buff1);
-                    zip.write(buff);
                     zip.closeEntry();
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
